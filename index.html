@@ -65,6 +65,7 @@
 				ctx.clearRect(0, 0, canvas.width, canvas.height);
 				for (let layer in layers) {
 					if (!layers[layer].hidden) {
+						ctx.globalCompositeOperation = layer === 'goo' ? 'multiply' : 'source-over'
 						let image = layers[layer]();
 						ctx.drawImage(image, 0, 0, image.width, image.height, 0, 0, canvas.width, canvas.height);
 					}
@@ -88,13 +89,11 @@
 					let imageData = offScreenCanvas2D.getImageData(xPos, yPos, 1, 1).data;
 					let visible = [...imageData][3] >= 128;
 					if (visible && !layers[layer].hidden) {
-						//console.log('touched', layer);
 						layers[layer].hidden = something = true;
 						break;
 					}
 				}
 				if (!something) {
-					console.log('nothing touched');
 					for (let layer in layers) {
 						layers[layer].hidden = false;
 					}
