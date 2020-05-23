@@ -1,26 +1,7 @@
 <!DOCTYPE html>
 <html>
 	<meta name="viewport" content="width=device-width">
-	<style type="text/css">
-		body {
-			background: black;
-			color: white;
-		}
-		img {
-			display: none;
-		}
-		p {
-			display: flex;
-			flex-direction: row;
-			justify-content: center;
-		}
-		a {
-			color: white;
-		}
-		canvas {
-			background: url("img/background.png") 0/100%;
-		}
-	</style>
+	<link rel="stylesheet" type="text/css" href="index.css">
 	<head>
 		<title>Play with Megumin!</title>
 	</head>
@@ -41,68 +22,6 @@
 		<p><a href="https://github.com/shujito/interactive-megumin">Source code and graphics in here</a></p>
 		<p>Images provided by&nbsp;<a href="https://instagram.com/tdsc_official_">TDSC</a></p>
 	</body>
-	<script type="text/javascript">
-		function main() {
-			let canvas = document.querySelector('canvas');
-			let ctx = canvas.getContext('2d');
-			let bounds = canvas.getBoundingClientRect();
-			let devicePixelRatio = window.devicePixelRatio;
-			canvas.style.width = `${canvas.width}px`;
-			canvas.style.height = `${canvas.height}px`;
-			canvas.width = bounds.width * devicePixelRatio;
-			canvas.height = bounds.height * devicePixelRatio;
-			//
-			let layers = {
-				body: () => document.querySelector('#body'),
-				hat: () => document.querySelector('#hat'),
-				panties: () => document.querySelector('#panties'),
-				choker: () => document.querySelector('#choker'),
-				gloves: () => document.querySelector('#gloves'),
-				dress: () => document.querySelector('#dress'),
-				cloak: () => document.querySelector(layers.dress.hidden ? '#cloak2' : '#cloak1'),
-				socks: () => document.querySelector('#socks'),
-				goo: () => document.querySelector('#goo'),
-			}
-			//
-			function update() {
-				ctx.clearRect(0, 0, canvas.width, canvas.height);
-				for (let layer in layers) {
-					if (!layers[layer].hidden) {
-						ctx.globalCompositeOperation = layer === 'goo' ? 'multiply' : 'source-over'
-						let image = layers[layer]();
-						ctx.drawImage(image, 0, 0, image.width, image.height, 0, 0, canvas.width, canvas.height);
-					}
-				}
-			}
-			requestAnimationFrame(update);
-			let offScreenCanvas = document.createElement('canvas');
-			offScreenCanvas.width = canvas.width;
-			offScreenCanvas.height = canvas.height;
-			let offScreenCanvas2D = offScreenCanvas.getContext("2d")
-			canvas.onclick = e => {
-				let newBounds = canvas.getBoundingClientRect();
-				let xPos = (e.clientX - newBounds.left) * devicePixelRatio;
-				let yPos = (e.clientY - newBounds.top) * devicePixelRatio;
-				let something = false;
-				for (let layer of Object.keys(layers).reverse()) {
-					if (layer === 'body') continue;
-					let image = layers[layer]();
-					offScreenCanvas2D.clearRect(0, 0, offScreenCanvas.width, offScreenCanvas.height);
-					offScreenCanvas2D.drawImage(image, 0, 0, image.width, image.height);
-					let imageData = offScreenCanvas2D.getImageData(xPos, yPos, 1, 1).data;
-					let visible = [...imageData][3] >= 128;
-					if (visible && !layers[layer].hidden) {
-						layers[layer].hidden = something = true;
-						break;
-					}
-				}
-				if (!something) {
-					for (let layer in layers) {
-						layers[layer].hidden = false;
-					}
-				}
-				requestAnimationFrame(update);
-			};
-		}
-	</script>
+	<!-- game sources are here: -->
+	<script type="text/javascript" src="index.js"></script>
 </html>
