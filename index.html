@@ -46,8 +46,8 @@
 		}
 
 		function main() {
-			canvas = document.querySelector('canvas');
-			ctx = canvas.getContext('2d');
+			let canvas = document.querySelector('canvas');
+			let ctx = canvas.getContext('2d');
 			let bounds = canvas.getBoundingClientRect();
 			let devicePixelRatio = window.devicePixelRatio;
 			canvas.style.width = `${canvas.width}px`;
@@ -55,7 +55,7 @@
 			canvas.width = bounds.width * devicePixelRatio;
 			canvas.height = bounds.height * devicePixelRatio;
 			//
-			layers = {
+			let layers = {
 				body: () => document.querySelector('#body'),
 				hat: () => document.querySelector('#hat'),
 				panties: () => document.querySelector('#panties'),
